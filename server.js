@@ -6,6 +6,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import openaiChatRouter from './server/openai-chat.js';
+import newsUpdater from './server/newsUpdater.js';
 
 dotenv.config();
 
@@ -25,6 +26,50 @@ app.use(express.json());
 
 // Usar rotas do assistente OpenAI
 app.use('/api/assistant', openaiChatRouter);
+
+// Endpoint para cron job de atualização de notícias
+app.post('/api/cron/update-news', async (req, res) => {
+  try {
+    // Verificar token de autenticação (Railway vai enviar isso)
+    const authToken = req.headers['x-cron-auth'] || req.query.token;
+    const expectedToken = process.env.CRON_SECRET || 'default-secret-change-me';
+    
+    if (authToken !== expectedToken) {
+      console.log('❌ Tentativa de acesso não autorizada ao cron job');
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    console.log('🔄 Iniciando atualização de notícias via cron job...');
+    
+    // Executar atualização de notícias
+    const result = await newsUpdater.updateNews();
+    
+    // Armazenar resultado da atualização
+    global.lastCronUpdate = {
+      ...result,
+      executedAt: new Date().toISOString()
+    };
+    
+    res.json({ 
+      success: result.success, 
+      message: 'Cron job executado',
+      result: result
+    });
+    
+    console.log('✅ Cron job de notícias executado às', new Date().toLocaleString('pt-BR'));
+  } catch (error) {
+    console.error('❌ Erro no cron job:', error);
+    res.status(500).json({ error: 'Erro ao executar cron job' });
+  }
+});
+
+// Endpoint para verificar se há atualização pendente
+app.get('/api/cron/check-update', (req, res) => {
+  res.json({ 
+    shouldUpdate: global.lastCronUpdate || null,
+    currentTime: new Date().toISOString()
+  });
+});
 
 // Servir arquivos estáticos (sempre serve o dist em produção ou quando existe)
 app.use(express.static(path.join(__dirname, 'dist')));

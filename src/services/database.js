@@ -1,4 +1,6 @@
 // Serviço de banco de dados local usando IndexedDB
+import { adminLog, adminError } from '../utils/debug.js';
+
 class NewsDatabase {
   constructor() {
     this.dbName = 'TunnelNewsDB';
@@ -13,13 +15,13 @@ class NewsDatabase {
       const request = indexedDB.open(this.dbName, this.version);
 
       request.onerror = () => {
-        console.error('Erro ao abrir banco de dados');
+        adminError('Erro ao abrir banco de dados');
         reject(request.error);
       };
 
       request.onsuccess = () => {
         this.db = request.result;
-        console.log('Banco de dados inicializado');
+        adminLog('Banco de dados inicializado');
         resolve(this.db);
       };
 
@@ -71,21 +73,23 @@ class NewsDatabase {
         createdAt: new Date().toISOString(),
         lastUpdated: new Date().toISOString()
       };
+      
+      adminLog(`💾 Salvando notícia com data: ${newsItem.date}`);
 
       const request = store.add(newsWithHash);
 
       request.onsuccess = () => {
-        console.log('Notícia adicionada:', newsItem.title);
+        adminLog('Notícia adicionada:', newsItem.title);
         resolve(request.result);
       };
 
       request.onerror = () => {
         // Se erro for de chave duplicada, ignorar
         if (request.error.name === 'ConstraintError') {
-          console.log('Notícia já existe:', newsItem.title);
+          adminLog('Notícia já existe:', newsItem.title);
           resolve(null);
         } else {
-          console.error('Erro ao adicionar notícia:', request.error);
+          adminError('Erro ao adicionar notícia:', request.error);
           reject(request.error);
         }
       };
@@ -100,7 +104,7 @@ class NewsDatabase {
         const result = await this.addNews(news);
         if (result) results.push(result);
       } catch (error) {
-        console.error('Erro ao adicionar notícia:', error);
+        adminError('Erro ao adicionar notícia:', error);
       }
     }
     return results;
@@ -118,6 +122,12 @@ class NewsDatabase {
       const news = [];
       let count = 0;
       
+      // Primeiro, vamos verificar quantas notícias existem no total
+      const countRequest = store.count();
+      countRequest.onsuccess = () => {
+        adminLog(`🔍 Total de notícias no banco antes de buscar: ${countRequest.result}`);
+      };
+      
       // Buscar em ordem decrescente de data
       const request = index.openCursor(null, 'prev');
 
@@ -128,12 +138,13 @@ class NewsDatabase {
           count++;
           cursor.continue();
         } else {
+          adminLog(`📦 Recuperadas ${news.length} notícias do banco (limite: ${limit})`);
           resolve(news);
         }
       };
 
       request.onerror = () => {
-        console.error('Erro ao buscar notícias:', request.error);
+        adminError('Erro ao buscar notícias:', request.error);
         reject(request.error);
       };
     });
@@ -167,7 +178,7 @@ class NewsDatabase {
       };
 
       request.onerror = () => {
-        console.error('Erro ao buscar notícias por categoria:', request.error);
+        adminError('Erro ao buscar notícias por categoria:', request.error);
         reject(request.error);
       };
     });
@@ -201,7 +212,7 @@ class NewsDatabase {
       };
 
       request.onerror = () => {
-        console.error('Erro ao buscar notícias recentes:', request.error);
+        adminError('Erro ao buscar notícias recentes:', request.error);
         reject(request.error);
       };
     });
@@ -214,6 +225,8 @@ class NewsDatabase {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - daysToKeep);
     const cutoffDateStr = cutoffDate.toISOString().split('T')[0];
+    
+    adminLog(`🗑️ Limpando notícias anteriores a: ${cutoffDateStr}`);
 
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readwrite');
@@ -231,13 +244,13 @@ class NewsDatabase {
           deletedCount++;
           cursor.continue();
         } else {
-          console.log(`${deletedCount} notícias antigas removidas`);
+          adminLog(`${deletedCount} notícias antigas removidas`);
           resolve(deletedCount);
         }
       };
 
       request.onerror = () => {
-        console.error('Erro ao limpar notícias antigas:', request.error);
+        adminError('Erro ao limpar notícias antigas:', request.error);
         reject(request.error);
       };
     });
@@ -253,13 +266,13 @@ class NewsDatabase {
       const request = store.clear();
 
       request.onsuccess = () => {
-        console.log('Banco de dados limpo completamente');
+        adminLog('Banco de dados limpo completamente');
         localStorage.removeItem('lastNewsUpdate');
         resolve(true);
       };
 
       request.onerror = () => {
-        console.error('Erro ao limpar banco de dados:', request.error);
+        adminError('Erro ao limpar banco de dados:', request.error);
         reject(request.error);
       };
     });
@@ -280,7 +293,7 @@ class NewsDatabase {
       };
 
       request.onerror = () => {
-        console.error('Erro ao verificar notícia:', request.error);
+        adminError('Erro ao verificar notícia:', request.error);
         reject(request.error);
       };
     });
@@ -323,7 +336,7 @@ class NewsDatabase {
       };
 
       countRequest.onerror = () => {
-        console.error('Erro ao obter estatísticas:', countRequest.error);
+        adminError('Erro ao obter estatísticas:', countRequest.error);
         reject(countRequest.error);
       };
     });

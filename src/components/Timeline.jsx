@@ -177,7 +177,7 @@ const Timeline = () => {
       {/* Horizontal Timeline Container */}
       <div 
         ref={scrollRef}
-        className="overflow-x-auto pb-4 scrollbar-hide"
+        className="overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onMouseDown={handleMouseDown}
         onMouseLeave={handleMouseLeave}
@@ -189,11 +189,6 @@ const Timeline = () => {
           setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
         }}
       >
-        <style jsx>{`
-          .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
         <div className={`inline-flex ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}>
           {/* Milestones */}
           <div className="relative flex gap-8 px-8">

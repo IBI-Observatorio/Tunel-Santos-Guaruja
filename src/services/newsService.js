@@ -1,5 +1,7 @@
 // Serviço para buscar notícias sobre o Túnel Santos-Guarujá
 import newsDB from './database.js';
+import mediaStackService from './mediaStackService.js';
+import { adminLog, adminError, adminWarn } from '../utils/debug.js';
 
 class NewsService {
   constructor() {
@@ -16,12 +18,12 @@ class NewsService {
   async initDatabase() {
     try {
       await newsDB.init();
-      console.log('Banco de dados de notícias inicializado');
+      adminLog('Banco de dados de notícias inicializado');
       
       // Verificar se precisa atualizar
       this.checkForDailyUpdate();
     } catch (error) {
-      console.error('Erro ao inicializar banco de dados:', error);
+      adminError('Erro ao inicializar banco de dados:', error);
     }
   }
 
@@ -30,9 +32,10 @@ class NewsService {
     try {
       // Buscar notícias do banco de dados local
       const news = await newsDB.getAllNews(50);
+      adminLog(`📊 Notícias recuperadas do banco: ${news.length}`);
       return news;
     } catch (error) {
-      console.error('Erro ao buscar notícias do banco:', error);
+      adminError('Erro ao buscar notícias do banco:', error);
       return [];
     }
   }
@@ -45,7 +48,7 @@ class NewsService {
       }
       return await newsDB.getNewsByCategory(category, 50);
     } catch (error) {
-      console.error('Erro ao buscar notícias por categoria:', error);
+      adminError('Erro ao buscar notícias por categoria:', error);
       return [];
     }
   }
@@ -63,12 +66,12 @@ class NewsService {
       const currentHour = now.getHours();
       
       if (currentHour >= updateHour || !lastUpdate) {
-        console.log('Executando atualização diária de notícias...');
+        adminLog('Executando atualização diária de notícias...');
         await this.performDailyUpdate();
       } else {
         // Agendar para 22h
         const msUntilUpdate = ((updateHour - currentHour) * 60 * 60 * 1000);
-        console.log(`Atualização agendada para ${updateHour}h`);
+        adminLog(`Atualização agendada para ${updateHour}h`);
         setTimeout(() => this.performDailyUpdate(), msUntilUpdate);
       }
     }
@@ -77,14 +80,14 @@ class NewsService {
   // Executar atualização diária
   async performDailyUpdate() {
     try {
-      console.log('Iniciando atualização de notícias...');
+      adminLog('Iniciando atualização de notícias...');
       
       // Buscar notícias de todas as fontes
       const allNews = await this.fetchFromMultipleSources();
       
       // Processar e adicionar ao banco
       let addedCount = 0;
-      console.log(`Total de notícias para processar: ${allNews.length}`);
+      adminLog(`Total de notícias para processar: ${allNews.length}`);
       
       for (const news of allNews) {
         // Validação adicional antes de salvar
@@ -106,14 +109,18 @@ class NewsService {
               category: this.categorizeNews(news),
               readTime: this.estimateReadTime(news.summary || '')
             };
-            await newsDB.addNews(newsWithCategory);
-            addedCount++;
-            console.log('✅ Notícia adicionada com categoria:', newsWithCategory.category, '-', news.title);
+            const result = await newsDB.addNews(newsWithCategory);
+            if (result) {
+              addedCount++;
+              adminLog('✅ Notícia adicionada com categoria:', newsWithCategory.category, '-', news.title);
+            } else {
+              adminLog('⚠️ Notícia duplicada (title hash):', news.title);
+            }
           } else {
-            console.log('⚠️ Notícia já existe no banco:', news.title);
+            adminLog('⚠️ Notícia já existe no banco (URL):', news.title);
           }
         } else {
-          console.log('❌ Notícia rejeitada - Faltam palavras-chave:', {
+          adminLog('❌ Notícia rejeitada - Faltam palavras-chave:', {
             title: news.title.substring(0, 80),
             hasTunnel,
             hasSantosGuaruja
@@ -121,10 +128,16 @@ class NewsService {
         }
       }
       
-      console.log(`🎉 Resultado final: ${addedCount} novas notícias adicionadas de ${allNews.length} processadas`);
+      adminLog(`🎉 Resultado final: ${addedCount} novas notícias adicionadas de ${allNews.length} processadas`);
       
-      // Limpar notícias antigas (manter últimos 30 dias)
-      await newsDB.cleanOldNews(30);
+      // Verificar total no banco após adição
+      const stats = await newsDB.getStats();
+      adminLog(`📈 Total de notícias no banco após adição: ${stats.totalNews}`);
+      
+      // DESATIVADO TEMPORARIAMENTE - notícias têm datas futuras (2025)
+      // A limpeza estava removendo notícias válidas
+      // await newsDB.cleanOldNews(30);
+      adminLog('⚠️ Limpeza automática desativada - notícias têm datas de 2025');
       
       // Atualizar timestamp da última atualização com data e hora completa
       const now = new Date().toISOString();
@@ -135,7 +148,7 @@ class NewsService {
       
       return { success: true, added: addedCount };
     } catch (error) {
-      console.error('Erro na atualização diária:', error);
+      adminError('Erro na atualização diária:', error);
       // Tentar novamente em 1 hora
       setTimeout(() => this.performDailyUpdate(), 60 * 60 * 1000);
       return { success: false, error: error.message };
@@ -145,7 +158,8 @@ class NewsService {
   // Buscar de múltiplas fontes
   async fetchFromMultipleSources() {
     const sources = [
-      this.fetchFromNewsAPI(),      // NewsAPI.org
+      this.fetchFromMediaStack(),   // MediaStack API (PRIORIDADE)
+      // this.fetchFromNewsAPI(),   // NewsAPI.org (DESATIVADA - usar MediaStack)
       this.fetchFromLocalNews(),
       this.fetchFromGovernmentSources(),
       this.fetchFromRSSFeeds()
@@ -155,25 +169,28 @@ class NewsService {
     
     // Combinar resultados de todas as fontes
     const allNews = [];
+    const sourceNames = ['MediaStack', 'LocalNews', 'Government', 'RSS'];
+    
     results.forEach((result, index) => {
       if (result.status === 'fulfilled' && result.value) {
-        console.log(`Fonte ${index + 1}: ${result.value.length} notícias`);
+        adminLog(`${sourceNames[index]}: ${result.value.length} notícias`);
         allNews.push(...result.value);
       } else if (result.status === 'rejected') {
-        console.error(`Fonte ${index + 1} falhou:`, result.reason);
+        adminError(`${sourceNames[index]} falhou:`, result.reason);
       }
     });
 
     return allNews;
   }
 
-  // Integração com NewsAPI.org (isolada)
+  // Integração com NewsAPI.org (DESATIVADA - usando MediaStack)
+  // Mantida para referência futura caso seja necessário reativar
   async fetchFromNewsAPI() {
     try {
       const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
       
       if (!API_KEY) {
-        console.warn('NewsAPI key não encontrada');
+        adminWarn('NewsAPI key não encontrada');
         return [];
       }
 
@@ -189,7 +206,7 @@ class NewsService {
       );
 
       if (!response.ok) {
-        console.error('Erro na API:', response.status);
+        adminError('Erro na API:', response.status);
         return [];
       }
 
@@ -215,7 +232,39 @@ class NewsService {
       
       return [];
     } catch (error) {
-      console.error('Erro ao buscar notícias:', error);
+      adminError('Erro ao buscar notícias:', error);
+      return [];
+    }
+  }
+
+  // Integração com MediaStack API
+  async fetchFromMediaStack() {
+    try {
+      // Usar busca específica para MediaStack
+      const searchQuery = 'tunel santos';
+      const result = await mediaStackService.fetchNews(searchQuery);
+      
+      if (result && result.articles) {
+        // Transformar dados da MediaStack para nosso formato
+        return result.articles.map(article => {
+          const newsItem = {
+            title: article.title,
+            source: article.source?.name || 'MediaStack',
+            date: article.publishedAt ? article.publishedAt.split('T')[0] : new Date().toISOString().split('T')[0],
+            summary: article.description || '',
+            url: article.url,
+            imageUrl: article.urlToImage
+          };
+          // Adicionar categoria
+          newsItem.category = this.categorizeNews(newsItem);
+          newsItem.readTime = this.estimateReadTime(newsItem.summary || '');
+          return newsItem;
+        });
+      }
+      
+      return [];
+    } catch (error) {
+      adminError('Erro ao buscar notícias da MediaStack:', error);
       return [];
     }
   }
@@ -293,7 +342,7 @@ class NewsService {
       // Verificar se contém palavras bloqueadas
       const hasBlockedWords = blockedWords.some(word => text.includes(word));
       if (hasBlockedWords) {
-        console.log('Notícia bloqueada por conteúdo irrelevante:', item.title);
+        adminLog('Notícia bloqueada por conteúdo irrelevante:', item.title);
         return false;
       }
       
@@ -314,7 +363,7 @@ class NewsService {
       const isRelevant = (hasTunnel && hasLocation) || (hasLocation && hasInfrastructure);
       
       if (!isRelevant) {
-        console.log('Notícia não relevante:', item.title);
+        adminLog('Notícia não relevante:', item.title);
       }
       
       return isRelevant;
@@ -399,22 +448,22 @@ class NewsService {
 
   // Forçar atualização manual (para testes ou emergências)
   async forceUpdate() {
-    console.log('Forçando atualização de notícias...');
+    adminLog('Forçando atualização de notícias...');
     return await this.performDailyUpdate();
   }
 
   // Limpar banco e buscar notícias novas
   async clearAndRefresh() {
     try {
-      console.log('Limpando banco de dados...');
+      adminLog('Limpando banco de dados...');
       await newsDB.clearAllNews();
       
-      console.log('Buscando notícias com novos critérios...');
+      adminLog('Buscando notícias com novos critérios...');
       const result = await this.performDailyUpdate();
       
       return result;
     } catch (error) {
-      console.error('Erro ao limpar e atualizar:', error);
+      adminError('Erro ao limpar e atualizar:', error);
       return { success: false, error: error.message };
     }
   }
