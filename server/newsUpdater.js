@@ -31,7 +31,8 @@ class NewsUpdater {
         sort: 'published_desc'
       };
 
-      const response = await axios.get('http://api.mediastack.com/v1/news', { params });
+      // Usar HTTPS para compatibilidade com produção
+      const response = await axios.get('https://api.mediastack.com/v1/news', { params });
       
       if (response.data && response.data.data) {
         const articles = response.data.data;

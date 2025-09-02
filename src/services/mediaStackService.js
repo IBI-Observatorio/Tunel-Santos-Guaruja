@@ -4,9 +4,13 @@ import { adminLog, adminError } from '../utils/debug.js';
 class MediaStackService {
   constructor() {
     this.apiKey = import.meta.env.VITE_MEDIA_STACK_API_KEY;
-    this.baseUrl = 'http://api.mediastack.com/v1';
+    // Usar HTTPS em produção, HTTP em desenvolvimento
+    const isProduction = window.location.protocol === 'https:';
+    this.baseUrl = isProduction ? 'https://api.mediastack.com/v1' : 'http://api.mediastack.com/v1';
     this.cache = new Map();
     this.cacheExpiration = 5 * 60 * 1000; // 5 minutes
+    
+    adminLog(`MediaStack API URL: ${this.baseUrl}`);
   }
 
   getCacheKey(params) {
