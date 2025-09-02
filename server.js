@@ -26,10 +26,8 @@ app.use(express.json());
 // Usar rotas do assistente OpenAI
 app.use('/api/assistant', openaiChatRouter);
 
-// Servir arquivos estáticos em produção
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'dist')));
-}
+// Servir arquivos estáticos (sempre serve o dist em produção ou quando existe)
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // Cache de documentos
 let documentsCache = [];
@@ -232,12 +230,10 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', documents: documentsCache.length });
 });
 
-// Rota catch-all para SPA em produção
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  });
-}
+// Rota catch-all para SPA
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Carrega documentos ao iniciar
 loadDocuments().then(() => {

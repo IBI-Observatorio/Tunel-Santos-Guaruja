@@ -1,5 +1,17 @@
 # Deploy no Railway
 
+## ⚠️ CONFIGURAÇÃO IMPORTANTE PARA NODE.JS 20
+
+O projeto usa `better-sqlite3` que requer Node.js 20+ e Python para compilação.
+
+### Arquivos de Configuração Necessários
+
+#### 1. `nixpacks.toml` (já criado)
+Define o ambiente com Node.js 20 e Python3 para compilação.
+
+#### 2. `railway.json` (já atualizado)
+Configurado para usar o nixpacks.toml personalizado.
+
 ## Passos para Deploy
 
 ### 1. Preparação Local
@@ -14,34 +26,41 @@ npm run build
 NODE_ENV=production npm run start:prod
 ```
 
-### 2. Configurar Railway
+### 2. Fazer Commit das Configurações
+```bash
+git add nixpacks.toml railway.json server.js README_DEPLOY.md
+git commit -m "Configurar deploy Railway com Node.js 20 e Python"
+git push origin main
+```
+
+### 3. Configurar Railway
 
 1. Acesse [Railway.app](https://railway.app)
 2. Faça login com GitHub
 3. Clique em "New Project" → "Deploy from GitHub repo"
 4. Selecione este repositório
-5. Railway detectará automaticamente o Node.js
+5. Railway usará automaticamente as configurações do nixpacks.toml
 
-### 3. Variáveis de Ambiente
+### 4. Variáveis de Ambiente
 
 No painel do Railway, adicione as seguintes variáveis:
 
 ```
 OPENAI_API_KEY=sua_chave_api_aqui
 NODE_ENV=production
-PORT=3001
+PORT=${{PORT}}  # Railway fornece automaticamente
 ```
 
-### 4. Deploy Automático
+### 5. Deploy Automático
 
 Railway fará o deploy automaticamente quando você:
 - Fizer push para a branch main
 - Ou clicar em "Deploy" manualmente
 
-### 5. Comandos Railway
+### 6. Comandos Railway
 
-O Railway executará automaticamente:
-1. `npm install` - Instala dependências
+O Railway executará automaticamente (definido em nixpacks.toml):
+1. `npm ci` - Instala dependências (com Node.js 20 e Python)
 2. `npm run build` - Compila o frontend
 3. `npm run start:prod` - Inicia o servidor
 
