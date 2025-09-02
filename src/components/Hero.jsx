@@ -1,9 +1,22 @@
 import React from 'react';
-import { ArrowDown, Waves } from 'lucide-react';
+import { ArrowDown, Waves, Ruler, DollarSign, Users } from 'lucide-react';
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-900 via-blue-700 to-cyan-600">
+      {/* Background Image with Blend Mode */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{
+          backgroundImage: `url('/background-tunel-santos-guaruja.png')`,
+          mixBlendMode: 'multiply',
+          filter: 'brightness(1.2) contrast(1.1) saturate(0.8)'
+        }}
+      ></div>
+      
+      {/* Additional Color Overlay for Better Integration */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 via-blue-700/40 to-cyan-600/50"></div>
+      
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -39,17 +52,26 @@ const Hero = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6">
-            <h3 className="text-3xl font-bold mb-2">1,255 km</h3>
-            <p className="text-blue-100">Extensão total</p>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6 flex items-start gap-4">
+            <Ruler className="text-cyan-300 mt-1" size={24} />
+            <div className="flex-1">
+              <h3 className="text-3xl font-bold mb-2">1,255 km</h3>
+              <p className="text-blue-100">Extensão total</p>
+            </div>
           </div>
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6">
-            <h3 className="text-3xl font-bold mb-2">R$ 5,78 bi</h3>
-            <p className="text-blue-100">Investimento</p>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6 flex items-start gap-4">
+            <DollarSign className="text-cyan-300 mt-1" size={24} />
+            <div className="flex-1">
+              <h3 className="text-3xl font-bold mb-2">R$ 5,78 bi</h3>
+              <p className="text-blue-100">Investimento</p>
+            </div>
           </div>
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6">
-            <h3 className="text-3xl font-bold mb-2">8.690</h3>
-            <p className="text-blue-100">Empregos gerados</p>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6 flex items-start gap-4">
+            <Users className="text-cyan-300 mt-1" size={24} />
+            <div className="flex-1">
+              <h3 className="text-3xl font-bold mb-2">8.690</h3>
+              <p className="text-blue-100">Empregos gerados</p>
+            </div>
           </div>
         </div>
       </div>

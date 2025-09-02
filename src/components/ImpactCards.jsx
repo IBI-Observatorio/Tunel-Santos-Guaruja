@@ -103,42 +103,6 @@ const ImpactCards = () => {
           </div>
         </motion.div>
       ))}
-
-      {/* Card de Resumo */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={inView ? { opacity: 1, scale: 1 } : {}}
-        transition={{ delay: 0.8 }}
-        className="col-span-1 md:col-span-3 mt-8"
-      >
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl p-8 text-white">
-          <h3 className="text-2xl font-bold mb-6 text-center">Impacto Total do Projeto</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">
-                {inView && <CountUp end={8690} duration={2} separator="." />}
-              </div>
-              <p className="text-sm opacity-90">Empregos Totais</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">
-                {inView && <CountUp end={18500} duration={2} separator="." />}
-              </div>
-              <p className="text-sm opacity-90">Ton CO₂/ano evitadas</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">
-                {inView && <CountUp end={95} duration={2} suffix="%" />}
-              </div>
-              <p className="text-sm opacity-90">Redução tempo</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">24/7</div>
-              <p className="text-sm opacity-90">Operação contínua</p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
     </div>
   );
 };

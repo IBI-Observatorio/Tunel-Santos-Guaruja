@@ -18,10 +18,10 @@ const Navigation = ({ activeSection, setActiveSection }) => {
     { id: 'overview', label: 'Visão Geral' },
     { id: 'timeline', label: 'Cronograma' },
     { id: 'impact', label: 'Impactos' },
-    { id: 'faq', label: 'FAQ' },
     { id: 'documents', label: 'Documentos' },
     { id: 'comissao', label: 'Comissão Externa' },
     { id: 'news', label: 'Notícias' },
+    { id: 'faq', label: 'FAQ' },
     { id: 'chatbot', label: 'Assistente' },
   ];
 
@@ -48,7 +48,7 @@ const Navigation = ({ activeSection, setActiveSection }) => {
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                     activeSection === item.id
                       ? isScrolled
-                        ? 'bg-blue-600 text-white shadow-md transform scale-105'
+                        ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg transform scale-105'
                         : 'bg-white text-blue-600 shadow-md'
                       : isScrolled
                         ? 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
@@ -86,7 +86,7 @@ const Navigation = ({ activeSection, setActiveSection }) => {
                 }}
                 className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-all duration-200 ${
                   activeSection === item.id 
-                    ? 'bg-blue-600 text-white shadow-md transform scale-105' 
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg transform scale-105' 
                     : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
                 }`}
               >

@@ -5,6 +5,7 @@ import { OpenAI } from 'openai';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import openaiChatRouter from './server/openai-chat.js';
 
 dotenv.config();
 
@@ -21,6 +22,9 @@ const openai = new OpenAI({
 
 app.use(cors());
 app.use(express.json());
+
+// Usar rotas do assistente OpenAI
+app.use('/api/assistant', openaiChatRouter);
 
 // Servir arquivos estáticos em produção
 if (process.env.NODE_ENV === 'production') {

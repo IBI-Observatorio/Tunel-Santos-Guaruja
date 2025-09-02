@@ -1,8 +1,74 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Circle, Clock } from 'lucide-react';
+import { CheckCircle, Circle, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Timeline = () => {
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  useEffect(() => {
+    const checkScroll = () => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        setCanScrollLeft(scrollLeft > 0);
+        setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+      }
+    };
+
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, []);
+
+  const handleScroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 250;
+      const newScrollLeft = direction === 'left' 
+        ? scrollRef.current.scrollLeft - scrollAmount
+        : scrollRef.current.scrollLeft + scrollAmount;
+      
+      scrollRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: 'smooth'
+      });
+      
+      setTimeout(() => {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        setCanScrollLeft(scrollLeft > 0);
+        setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+      }, 300);
+    }
+  };
+
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+    
+    const { scrollLeft: currentScrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+    setCanScrollLeft(currentScrollLeft > 0);
+    setCanScrollRight(currentScrollLeft + clientWidth < scrollWidth);
+  };
+
   const milestones = [
     {
       phase: 'Qualificação no PPI',
@@ -90,48 +156,92 @@ const Timeline = () => {
 
   return (
     <div className="relative">
-      {/* Timeline Line */}
-      <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+      {/* Navigation Buttons */}
+      {canScrollLeft && (
+        <button
+          onClick={() => handleScroll('left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 p-2 bg-white rounded-full shadow-lg hover:shadow-xl transition-all"
+        >
+          <ChevronLeft className="w-6 h-6 text-gray-700" />
+        </button>
+      )}
+      {canScrollRight && (
+        <button
+          onClick={() => handleScroll('right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 p-2 bg-white rounded-full shadow-lg hover:shadow-xl transition-all"
+        >
+          <ChevronRight className="w-6 h-6 text-gray-700" />
+        </button>
+      )}
 
-      {/* Milestones */}
-      <div className="space-y-8">
-        {milestones.map((milestone, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            viewport={{ once: true }}
-            className="relative flex items-start"
-          >
-            {/* Icon */}
-            <div className="absolute left-0 p-3 bg-white rounded-full shadow-lg z-10">
-              {getStatusIcon(milestone.status)}
-            </div>
-
-            {/* Content */}
-            <div className={`ml-20 p-6 rounded-lg border-2 ${getStatusColor(milestone.status)} transition-all hover:shadow-lg`}>
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  {milestone.phase}
-                </h3>
-                <span className="text-sm font-medium text-gray-600 mt-1 sm:mt-0">
-                  {milestone.period}
-                </span>
-              </div>
-              <p className="text-gray-600">
-                {milestone.description}
-              </p>
-              {milestone.status === 'in-progress' && (
-                <div className="mt-3">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-500 text-white">
-                    Em andamento
-                  </span>
+      {/* Horizontal Timeline Container */}
+      <div 
+        ref={scrollRef}
+        className="overflow-x-auto pb-4 scrollbar-hide"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        onScroll={(e) => {
+          const { scrollLeft, scrollWidth, clientWidth } = e.target;
+          setCanScrollLeft(scrollLeft > 0);
+          setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+        }}
+      >
+        <style jsx>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
+        <div className={`inline-flex ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}>
+          {/* Milestones */}
+          <div className="relative flex gap-8 px-8">
+            {/* Timeline Line - spans from first to last milestone center */}
+            {milestones.length > 1 && (
+              <div className="absolute top-6 h-0.5 bg-gray-300" 
+                   style={{ 
+                     left: 'calc(2rem + 6rem)',  // px-8 + half of w-48
+                     right: 'calc(2rem + 6rem)'  // same on the right
+                   }}></div>
+            )}
+            {milestones.map((milestone, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="flex flex-col items-center w-48"
+              >
+                {/* Icon */}
+                <div className="p-3 bg-white rounded-full shadow-lg z-10 mb-4">
+                  {getStatusIcon(milestone.status)}
                 </div>
-              )}
-            </div>
-          </motion.div>
-        ))}
+                
+                {/* Content */}
+                <div className={`w-full p-4 rounded-lg border-2 ${getStatusColor(milestone.status)} transition-all hover:shadow-lg`}>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                    {milestone.phase}
+                  </h3>
+                  <span className="text-xs font-medium text-gray-600 block mb-2">
+                    {milestone.period}
+                  </span>
+                  <p className="text-xs text-gray-600 line-clamp-2">
+                    {milestone.description}
+                  </p>
+                  {milestone.status === 'in-progress' && (
+                    <div className="mt-2">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-500 text-white">
+                        Em andamento
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Progress Summary */}

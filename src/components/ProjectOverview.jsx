@@ -3,8 +3,11 @@ import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
 import { useInView } from 'react-intersection-observer';
 import { 
-  MapPin, DollarSign, Calendar, Users, 
-  Building, Waves, Shield, TrendingUp 
+  Car, Clock, Calendar, Percent, 
+  Building, Waves, Shield, TrendingUp,
+  Package, Grid3x3, Ruler, ArrowUpDown,
+  Route, Bike, Users, Train,
+  Zap, DollarSign, Clock3, UserCheck
 } from 'lucide-react';
 
 const ProjectOverview = () => {
@@ -12,19 +15,18 @@ const ProjectOverview = () => {
 
   const stats = [
     {
-      icon: <MapPin className="w-8 h-8 text-blue-600" />,
-      value: 1255,
-      suffix: 'm',
-      label: 'Extensão Total',
-      description: '870m de túnel imerso'
+      icon: <Car className="w-8 h-8 text-blue-600" />,
+      value: 6,
+      suffix: ' faixas',
+      label: 'Capacidade viária',
+      description: 'Mais ciclovia e pedestres'
     },
     {
-      icon: <DollarSign className="w-8 h-8 text-green-600" />,
-      value: 5.78,
-      prefix: 'R$ ',
-      suffix: ' bi',
-      label: 'Investimento',
-      description: 'CAPEX total do projeto'
+      icon: <Clock className="w-8 h-8 text-green-600" />,
+      value: 3,
+      suffix: ' min',
+      label: 'Travessia',
+      description: 'Santos-Guarujá'
     },
     {
       icon: <Calendar className="w-8 h-8 text-purple-600" />,
@@ -34,10 +36,11 @@ const ProjectOverview = () => {
       description: 'Período de operação'
     },
     {
-      icon: <Users className="w-8 h-8 text-orange-600" />,
-      value: 8690,
-      label: 'Empregos',
-      description: 'Diretos e indiretos'
+      icon: <Percent className="w-8 h-8 text-orange-600" />,
+      value: 870,
+      suffix: 'm',
+      label: 'Túnel imerso',
+      description: 'Trecho subaquático'
     }
   ];
 
@@ -86,7 +89,7 @@ const ProjectOverview = () => {
                       <CountUp
                         end={stat.value}
                         duration={2}
-                        decimals={stat.value < 100 ? 2 : 0}
+                        decimals={0}
                       />
                       {stat.suffix}
                     </>
@@ -138,30 +141,66 @@ const ProjectOverview = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <h4 className="font-semibold mb-2">Composição</h4>
-            <ul className="text-sm space-y-1 text-blue-100">
-              <li>• 6 módulos de concreto</li>
-              <li>• 3 células por módulo</li>
-              <li>• 41 metros de largura</li>
-              <li>• 5,5 metros de altura livre</li>
-            </ul>
+            <div className="text-sm space-y-2 text-blue-100">
+              <div className="flex items-center gap-2">
+                <Package className="w-4 h-4 flex-shrink-0" />
+                <span>6 módulos de concreto</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Grid3x3 className="w-4 h-4 flex-shrink-0" />
+                <span>3 células por módulo</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Ruler className="w-4 h-4 flex-shrink-0" />
+                <span>41 metros de largura</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ArrowUpDown className="w-4 h-4 flex-shrink-0" />
+                <span>5,5 metros de altura livre</span>
+              </div>
+            </div>
           </div>
           <div>
             <h4 className="font-semibold mb-2">Capacidade</h4>
-            <ul className="text-sm space-y-1 text-blue-100">
-              <li>• 6 faixas de rolamento</li>
-              <li>• Ciclovia dedicada</li>
-              <li>• Passagem de pedestres</li>
-              <li>• Preparado para VLT</li>
-            </ul>
+            <div className="text-sm space-y-2 text-blue-100">
+              <div className="flex items-center gap-2">
+                <Route className="w-4 h-4 flex-shrink-0" />
+                <span>6 faixas de rolamento</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Bike className="w-4 h-4 flex-shrink-0" />
+                <span>Ciclovia dedicada</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-4 h-4 flex-shrink-0" />
+                <span>Passagem de pedestres</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Train className="w-4 h-4 flex-shrink-0" />
+                <span>Preparado para VLT</span>
+              </div>
+            </div>
           </div>
           <div>
             <h4 className="font-semibold mb-2">Operação</h4>
-            <ul className="text-sm space-y-1 text-blue-100">
-              <li>• Sistema Free Flow</li>
-              <li>• Tarifa: R$ 6,05</li>
-              <li>• Operação 24h</li>
-              <li>• Isenção para pedestres/ciclistas</li>
-            </ul>
+            <div className="text-sm space-y-2 text-blue-100">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 flex-shrink-0" />
+                <span>Sistema Free Flow</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <DollarSign className="w-4 h-4 flex-shrink-0" />
+                <span>Tarifa: R$ 6,05</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock3 className="w-4 h-4 flex-shrink-0" />
+                <span>Operação 24h</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <UserCheck className="w-4 h-4 flex-shrink-0" />
+                <span>Isenção para pedestres/ciclistas</span>
+              </div>
+            </div>
           </div>
         </div>
       </motion.div>
