@@ -7,6 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import openaiChatRouter from './server/openai-chat.js';
 import newsUpdater from './server/newsUpdater.js';
+import cronScheduler from './server/cronScheduler.js';
 
 dotenv.config();
 
@@ -284,6 +285,9 @@ app.get('*', (req, res) => {
 loadDocuments().then(() => {
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
+    
+    // Iniciar cron scheduler para atualização automática
+    cronScheduler.start();
   });
 });
 

@@ -1,0 +1,29 @@
+name: Update News Daily
+
+on:
+  schedule:
+    # Executa às 22:00 horário de Brasília (01:00 UTC durante horário de verão)
+    - cron: '0 1 * * *'
+  
+  # Permite execução manual
+  workflow_dispatch:
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Update News via API
+        run: |
+          curl -X POST https://tunel-santos-guaruja-production.up.railway.app/api/cron/update-news \
+            -H "x-cron-auth: ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -f \
+            --retry 3 \
+            --retry-delay 10
+      
+      - name: Check Update Status
+        if: success()
+        run: |
+          sleep 5
+          curl https://tunel-santos-guaruja-production.up.railway.app/api/cron/check-update
