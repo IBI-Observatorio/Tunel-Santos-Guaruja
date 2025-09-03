@@ -1,9 +1,9 @@
 [phases.setup]
-nixPkgs = ["nodejs_18", "python311", "python311Packages.setuptools"]
+nixPkgs = ["nodejs_18"]
 
 [phases.install]
 cmds = [
-  "python3 -m pip install setuptools --break-system-packages || true",
+  "pip install setuptools || true",
   "npm ci"
 ]
 
