@@ -1,11 +1,8 @@
 [phases.setup]
-nixPkgs = ["nodejs_18"]
+nixPkgs = ["nodejs_18", "python39", "python39Packages.setuptools"]
 
 [phases.install]
-cmds = [
-  "pip install setuptools || true",
-  "npm ci"
-]
+cmds = ["npm ci"]
 
 [phases.build]
 cmds = ["npm run build"]
