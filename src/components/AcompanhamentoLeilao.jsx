@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, ExternalLink, FileText, Trophy } from 'lucide-react';
+import { Calendar, Clock, ExternalLink, FileText, Trophy, CheckCircle } from 'lucide-react';
 
 const AcompanhamentoLeilao = () => {
   const [timeLeft, setTimeLeft] = useState(null);
@@ -145,20 +145,20 @@ const AcompanhamentoLeilao = () => {
 
               {/* Botão B3 */}
               <a
-                href="https://www.b3.com.br/pt_br/produtos-e-servicos/negociacao/leiloes/licitacoes-publicas/licitacoes/em-andamento-e-anteriores/"
+                href="https://bvmf.bmfbovespa.com.br/consulta-leiloes/ResumoLeiloesEspeciaisDetalhe.aspx?IdLeilao=10849&TituloLeilao=S%c3%83O+PAULO+-+01%2f2025+-+PPP+T%c3%9aNEL+IMERSO+SANTOS-GUARUJ%c3%81&idioma=pt-br"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center w-full px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                className="inline-flex items-center justify-center w-full px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-colors duration-200"
               >
                 <ExternalLink className="mr-2" size={20} />
-                Acompanhar na B3
+                Visualizar na B3
               </a>
             </div>
           </div>
         </div>
 
         {/* Card de Resultado */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-xl overflow-hidden">
+        <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-xl shadow-xl overflow-hidden">
           <div className="p-8">
             <div className="flex items-center justify-between">
               <div>
@@ -166,31 +166,46 @@ const AcompanhamentoLeilao = () => {
                   <Trophy className="mr-3" size={32} />
                   Resultado do Leilão
                 </h3>
-                <p className="text-blue-100 text-lg">
-                  Aguardando a realização do leilão para divulgação do resultado oficial
+                <p className="text-green-100 text-lg">
+                  Leilão realizado com sucesso! Confira os detalhes da empresa vencedora
                 </p>
               </div>
               <div className="hidden md:block">
                 <div className="bg-white/20 backdrop-blur-sm rounded-full p-6">
-                  <Clock className="w-12 h-12 text-white" />
+                  <CheckCircle className="w-12 h-12 text-white" />
                 </div>
               </div>
             </div>
             
-            {/* Placeholder para futuras informações */}
+            {/* Informações da empresa vencedora */}
             <div className="mt-6 pt-6 border-t border-white/20">
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                  <p className="text-blue-100 text-sm mb-1">Empresa Vencedora</p>
-                  <p className="text-white font-semibold">A definir</p>
+                  <p className="text-green-100 text-sm mb-2">Empresa Vencedora</p>
+                  <div className="flex items-center gap-3">
+                    <img 
+                      src="https://upload.wikimedia.org/wikipedia/commons/6/6b/LogoME.jpg" 
+                      alt="Mota-Engil" 
+                      className="h-8 w-auto bg-white rounded p-1"
+                    />
+                    <a 
+                      href="https://www.mota-engil.com/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-white font-semibold hover:text-green-200 transition-colors flex items-center gap-1"
+                    >
+                      Mota-Engil
+                      <ExternalLink size={14} />
+                    </a>
+                  </div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                  <p className="text-blue-100 text-sm mb-1">Valor da Proposta</p>
-                  <p className="text-white font-semibold">A definir</p>
+                  <p className="text-green-100 text-sm mb-1">Valor da Proposta</p>
+                  <p className="text-white font-semibold text-lg">R$ 438,3 milhões/ano</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                  <p className="text-blue-100 text-sm mb-1">Deságio</p>
-                  <p className="text-white font-semibold">A definir</p>
+                  <p className="text-green-100 text-sm mb-1">Deságio</p>
+                  <p className="text-white font-semibold text-lg">0,5%</p>
                 </div>
               </div>
             </div>
