@@ -52,24 +52,24 @@ const Hero = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6 max-w-4xl mx-auto">
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4">
-            <Ruler className="text-cyan-300" size={20} />
-            <div className="text-center sm:text-left sm:flex-1">
-              <h3 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">1,255 km</h3>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-row items-center sm:items-start gap-2 sm:gap-4">
+            <Ruler className="text-cyan-300 flex-shrink-0" size={20} />
+            <div className="text-center sm:text-left flex-1">
+              <h3 className="text-lg sm:text-3xl font-bold leading-tight">1,255 km</h3>
               <p className="text-xs sm:text-base text-blue-100">Extensão total</p>
             </div>
           </div>
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4">
-            <DollarSign className="text-cyan-300" size={20} />
-            <div className="text-center sm:text-left sm:flex-1">
-              <h3 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">R$ 5,78 bi</h3>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-row items-center sm:items-start gap-2 sm:gap-4">
+            <DollarSign className="text-cyan-300 flex-shrink-0" size={20} />
+            <div className="text-center sm:text-left flex-1">
+              <h3 className="text-lg sm:text-3xl font-bold leading-tight">R$ 5,78 bi</h3>
               <p className="text-xs sm:text-base text-blue-100">Investimento</p>
             </div>
           </div>
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 col-span-2 sm:col-span-1">
-            <Users className="text-cyan-300" size={20} />
-            <div className="text-center sm:text-left sm:flex-1">
-              <h3 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">8.690</h3>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-row items-center sm:items-start gap-2 sm:gap-4 col-span-2 sm:col-span-1">
+            <Users className="text-cyan-300 flex-shrink-0" size={20} />
+            <div className="text-center sm:text-left flex-1">
+              <h3 className="text-lg sm:text-3xl font-bold leading-tight">8.690</h3>
               <p className="text-xs sm:text-base text-blue-100">Empregos gerados</p>
             </div>
           </div>
