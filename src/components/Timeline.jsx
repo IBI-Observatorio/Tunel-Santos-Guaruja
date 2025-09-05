@@ -97,13 +97,13 @@ const Timeline = () => {
     {
       phase: 'Leilão',
       period: '5 de Setembro de 2025',
-      status: 'in-progress',
+      status: 'completed',
       description: 'Sessão pública para recebimento de propostas'
     },
     {
       phase: 'Assinatura do Contrato',
       period: '4º Trimestre 2025',
-      status: 'pending',
+      status: 'in-progress',
       description: 'Formalização da concessão com o vencedor'
     },
     {
@@ -250,7 +250,7 @@ const Timeline = () => {
         <h3 className="text-xl font-bold text-gray-900 mb-4">Resumo do Progresso</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-600">4</div>
+            <div className="text-3xl font-bold text-green-600">5</div>
             <div className="text-sm text-gray-600">Etapas Concluídas</div>
           </div>
           <div className="text-center">
@@ -258,15 +258,15 @@ const Timeline = () => {
             <div className="text-sm text-gray-600">Em Andamento</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-gray-600">5</div>
+            <div className="text-3xl font-bold text-gray-600">4</div>
             <div className="text-sm text-gray-600">Etapas Futuras</div>
           </div>
         </div>
         <div className="mt-4">
           <div className="w-full bg-gray-200 rounded-full h-3">
-            <div className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full" style={{ width: '45%' }}></div>
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 h-3 rounded-full" style={{ width: '55%' }}></div>
           </div>
-          <p className="text-center text-sm text-gray-600 mt-2">45% do cronograma pré-obras concluído</p>
+          <p className="text-center text-sm text-gray-600 mt-2">55% do cronograma pré-obras concluído</p>
         </div>
       </motion.div>
     </div>
