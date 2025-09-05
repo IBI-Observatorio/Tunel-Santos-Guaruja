@@ -72,8 +72,8 @@ function TestBasic() {
           <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>
             📅 Leilão
           </h2>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#7c3aed' }}>Jul/2025</p>
-          <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>28 de julho de 2025</p>
+          <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#7c3aed' }}>Set/2025</p>
+          <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>5 de setembro de 2025</p>
         </div>
       </div>
 

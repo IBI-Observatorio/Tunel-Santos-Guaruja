@@ -16,6 +16,7 @@ const Navigation = ({ activeSection, setActiveSection }) => {
   const navItems = [
     { id: 'home', label: 'Início' },
     { id: 'overview', label: 'Visão Geral' },
+    { id: 'acompanhamento-leilao', label: 'Leilão' },
     { id: 'timeline', label: 'Cronograma' },
     { id: 'impact', label: 'Impactos' },
     { id: 'documents', label: 'Documentos' },

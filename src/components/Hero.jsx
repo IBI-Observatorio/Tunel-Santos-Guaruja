@@ -74,6 +74,24 @@ const Hero = () => {
             </div>
           </div>
         </div>
+
+        {/* IBI Observatório Sponsorship */}
+        <div className="mt-12 flex items-center justify-center text-lg text-blue-100">
+          <span>Um produto do</span>
+          <a 
+            href="https://ibi-observatorio.org/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-white hover:text-cyan-300 transition-colors ml-1"
+          >
+            <img 
+              src="/logo-ibi-observatorio.png" 
+              alt="IBI Observatório" 
+              className="h-6 w-auto brightness-0 invert ml-2"
+            />
+            <span>Observatório de Dados do Instituto Brasileiro de Infraestrutura</span>
+          </a>
+        </div>
       </div>
 
       {/* Seta posicionada fora da área de conteúdo */}

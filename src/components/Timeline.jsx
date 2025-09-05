@@ -96,7 +96,7 @@ const Timeline = () => {
     },
     {
       phase: 'Leilão',
-      period: '28 de Julho de 2025',
+      period: '5 de Setembro de 2025',
       status: 'in-progress',
       description: 'Sessão pública para recebimento de propostas'
     },

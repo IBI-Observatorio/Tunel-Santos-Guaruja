@@ -14,9 +14,10 @@ import ImpactCards from './components/ImpactCards';
 import DocumentsSection from './components/DocumentsSection';
 import Chatbot from './components/Chatbot';
 import ComissaoExterna from './components/ComissaoExterna';
+import AcompanhamentoLeilao from './components/AcompanhamentoLeilao';
 
 function App() {
-  const sections = ['home', 'overview', 'timeline', 'impact', 'documents', 'comissao', 'news', 'faq', 'chatbot'];
+  const sections = ['home', 'overview', 'acompanhamento-leilao', 'timeline', 'impact', 'documents', 'comissao', 'news', 'faq', 'chatbot'];
   const activeSection = useScrollSpy(sections, 100);
 
   return (
@@ -43,6 +44,9 @@ function App() {
             <ProjectOverview />
           </div>
         </section>
+
+        {/* Seção de Acompanhamento do Leilão */}
+        <AcompanhamentoLeilao />
 
         {/* Timeline Simplificada */}
         <section id="timeline" className="py-20 bg-white/50">

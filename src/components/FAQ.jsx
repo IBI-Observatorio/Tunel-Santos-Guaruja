@@ -56,7 +56,7 @@ const FAQ = () => {
     {
       category: 'general',
       question: 'Quando será o leilão?',
-      answer: 'Entrega de propostas em 28 de julho de 2025, abertura das propostas em 1º de agosto de 2025, e assinatura do contrato prevista para o 4º trimestre de 2025.'
+      answer: 'Entrega de propostas em 5 de setembro de 2025, abertura das propostas em 10 de setembro de 2025, e assinatura do contrato prevista para o 4º trimestre de 2025.'
     },
     {
       category: 'technical',
