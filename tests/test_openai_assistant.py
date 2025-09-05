@@ -39,7 +39,7 @@ def test_simple_assistant():
             Informações principais:
             - Investimento total: R$ 7 bilhões
             - Prazo de concessão: 30 anos
-            - Leilão: 28 de julho de 2025
+            - Leilão: 5 de setembro de 2025
             - Extensão: 870m de túnel imerso
             - 6 faixas de rodagem + ciclovia + pedestres
             """,

@@ -51,46 +51,48 @@ const Hero = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6 flex items-start gap-4">
-            <Ruler className="text-cyan-300 mt-1" size={24} />
-            <div className="flex-1">
-              <h3 className="text-3xl font-bold mb-2">1,255 km</h3>
-              <p className="text-blue-100">Extensão total</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6 max-w-4xl mx-auto">
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4">
+            <Ruler className="text-cyan-300" size={20} />
+            <div className="text-center sm:text-left sm:flex-1">
+              <h3 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">1,255 km</h3>
+              <p className="text-xs sm:text-base text-blue-100">Extensão total</p>
             </div>
           </div>
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6 flex items-start gap-4">
-            <DollarSign className="text-cyan-300 mt-1" size={24} />
-            <div className="flex-1">
-              <h3 className="text-3xl font-bold mb-2">R$ 5,78 bi</h3>
-              <p className="text-blue-100">Investimento</p>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4">
+            <DollarSign className="text-cyan-300" size={20} />
+            <div className="text-center sm:text-left sm:flex-1">
+              <h3 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">R$ 5,78 bi</h3>
+              <p className="text-xs sm:text-base text-blue-100">Investimento</p>
             </div>
           </div>
-          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-6 flex items-start gap-4">
-            <Users className="text-cyan-300 mt-1" size={24} />
-            <div className="flex-1">
-              <h3 className="text-3xl font-bold mb-2">8.690</h3>
-              <p className="text-blue-100">Empregos gerados</p>
+          <div className="bg-white bg-opacity-10 backdrop-blur rounded-lg p-3 sm:p-6 flex flex-col sm:flex-row items-center sm:items-start gap-2 sm:gap-4 col-span-2 sm:col-span-1">
+            <Users className="text-cyan-300" size={20} />
+            <div className="text-center sm:text-left sm:flex-1">
+              <h3 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">8.690</h3>
+              <p className="text-xs sm:text-base text-blue-100">Empregos gerados</p>
             </div>
           </div>
         </div>
 
         {/* IBI Observatório Sponsorship */}
-        <div className="mt-12 flex items-center justify-center text-lg text-blue-100">
-          <span>Um produto do</span>
-          <a 
-            href="https://ibi-observatorio.org/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-white hover:text-cyan-300 transition-colors ml-1"
-          >
-            <img 
-              src="/logo-ibi-observatorio.png" 
-              alt="IBI Observatório" 
-              className="h-6 w-auto brightness-0 invert ml-2"
-            />
-            <span>Observatório de Dados do Instituto Brasileiro de Infraestrutura</span>
-          </a>
+        <div className="mt-12 text-xs sm:text-lg text-blue-100">
+          <div className="flex flex-col sm:flex-row items-center justify-center text-center">
+            <span className="block sm:inline">Um produto do</span>
+            <a 
+              href="https://ibi-observatorio.org/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-white hover:text-cyan-300 transition-colors sm:ml-1"
+            >
+              <img 
+                src="/logo-ibi-observatorio.png" 
+                alt="IBI Observatório" 
+                className="h-4 sm:h-6 w-auto brightness-0 invert mt-1 sm:mt-0 sm:ml-2"
+              />
+              <span className="text-xs sm:text-lg mt-1 sm:mt-0">Observatório de Dados do Instituto Brasileiro de Infraestrutura</span>
+            </a>
+          </div>
         </div>
       </div>
 

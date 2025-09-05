@@ -32,7 +32,7 @@ function App() {
         </section>
         
         {/* Seção de Visão Geral Simplificada */}
-        <section id="overview" className="py-20">
+        <section id="overview" className="py-20 pt-28 sm:pt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Visão Geral do Projeto
@@ -49,7 +49,7 @@ function App() {
         <AcompanhamentoLeilao />
 
         {/* Timeline Simplificada */}
-        <section id="timeline" className="py-20 bg-white/50">
+        <section id="timeline" className="py-20 pt-28 sm:pt-20 bg-white/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Cronograma do Projeto
@@ -63,7 +63,7 @@ function App() {
         </section>
 
         {/* Impactos e Benefícios */}
-        <section id="impact" className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
+        <section id="impact" className="py-20 pt-28 sm:pt-20 bg-gradient-to-r from-blue-50 to-cyan-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Impactos e Benefícios
@@ -77,7 +77,7 @@ function App() {
         </section>
 
         {/* Documentos */}
-        <section id="documents" className="py-20">
+        <section id="documents" className="py-20 pt-28 sm:pt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Documentação do Projeto
@@ -91,7 +91,7 @@ function App() {
         </section>
 
         {/* Comissão Externa da Câmara dos Deputados */}
-        <section id="comissao" className="py-20 bg-white">
+        <section id="comissao" className="py-20 pt-28 sm:pt-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Comissão Externa da Câmara dos Deputados
@@ -105,7 +105,7 @@ function App() {
         </section>
 
         {/* Seção de Notícias */}
-        <section id="news" className="py-20 bg-gradient-to-r from-gray-50 to-white">
+        <section id="news" className="py-20 pt-28 sm:pt-20 bg-gradient-to-r from-gray-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Notícias e Atualizações
@@ -119,7 +119,7 @@ function App() {
         </section>
 
         {/* FAQ Completo */}
-        <section id="faq" className="py-20 bg-white/50">
+        <section id="faq" className="py-20 pt-28 sm:pt-20 bg-white/50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Perguntas Frequentes
@@ -133,7 +133,7 @@ function App() {
         </section>
 
         {/* Assistente Virtual */}
-        <section id="chatbot" className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
+        <section id="chatbot" className="py-20 pt-28 sm:pt-20 bg-gradient-to-r from-blue-50 to-cyan-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-4 gradient-text">
               Assistente Virtual
