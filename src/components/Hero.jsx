@@ -36,16 +36,16 @@ const Hero = () => {
           em mobilidade urbana da Baixada Santista.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <div className="flex gap-3 md:gap-4 justify-center mb-12 max-w-2xl mx-auto">
           <button 
             onClick={() => document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+            className="px-4 md:px-8 py-3 md:py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors text-sm md:text-base"
           >
             Explorar o Projeto
           </button>
           <button 
             onClick={() => document.getElementById('documents')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+            className="px-4 md:px-8 py-3 md:py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors text-sm md:text-base"
           >
             Documentação
           </button>
